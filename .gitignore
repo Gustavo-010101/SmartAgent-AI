@@ -1,0 +1,22 @@
+# Credenciais e informações sensíveis
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Ambiente virtual
+.venv/
+venv/
+
+# Arquivos temporários do Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Arquivos temporários e logs
+*.log
+.DS_Store
+Thumbs.db
+
+# Configurações locais do VS Code
+.vscode/

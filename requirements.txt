@@ -1,0 +1,6 @@
+streamlit
+ollama
+mysql-connector-python
+python-dotenv
+pandas
+altair
