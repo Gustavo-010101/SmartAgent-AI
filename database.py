@@ -6,12 +6,27 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def conectar():
+    provedor = os.getenv("PROVEDOR_DB", "mysql").lower()
+
+    if provedor == "tidb":
+        return mysql.connector.connect(
+            host=os.getenv("TIDB_HOST"),
+            port=int(os.getenv("TIDB_PORT", "4000")),
+            user=os.getenv("TIDB_USER"),
+            password=os.getenv("TIDB_PASSWORD"),
+            database=os.getenv("TIDB_DATABASE"),
+            ssl_ca=os.getenv("TIDB_SSL_CA"),
+            ssl_verify_cert=True,
+            ssl_verify_identity=True
+        )
+
     return mysql.connector.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME")
     )
+
 
 def consultar_pedido(numero_pedido):
     conexao = conectar()

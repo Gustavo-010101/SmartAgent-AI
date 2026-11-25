@@ -20,3 +20,8 @@ Thumbs.db
 
 # Configurações locais do VS Code
 .vscode/
+
+# Arquivos de teste
+teste_groq.py
+teste_tidb.py
+teste_analise.py

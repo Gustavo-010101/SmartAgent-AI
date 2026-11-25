@@ -3,10 +3,23 @@ import pandas as pd
 import json
 import streamlit as st
 from ollama import chat
+from provedor_ia import (
+    PROVEDOR_IA,
+    MODELO_GROQ,
+    obter_cliente_groq,
+    verificar_groq,
+    responder_groq
+)
 import uuid
 from database import verificar_mysql
 from database import (
     consultar_pedido,
+    listar_pedidos,
+    contar_clientes,
+    analisar_pedidos,
+)
+
+from historico import (
     salvar_mensagem,
     carregar_historico,
     listar_conversas,
@@ -15,11 +28,7 @@ from database import (
     exportar_conversa,
     obter_metricas,
     obter_atividade_diaria,
-    listar_pedidos,
-    contar_clientes,
-    analisar_pedidos,
 )
-
 
 MODELO = "qwen3:4b"
 
@@ -94,7 +103,7 @@ if "mensagens" not in st.session_state:
     st.session_state.mensagens = [INSTRUCOES.copy()]
 
 st.title("🤖 SmartAgent AI")
-st.caption("Agente inteligente de atendimento | Python + Ollama + MySQL")
+st.caption(f"Agente inteligente de atendimento | Python + {PROVEDOR_IA.title()} + MySQL")
 
 st.markdown("### 📊 Métricas de atendimento")
 
@@ -236,17 +245,23 @@ with st.sidebar:
     st.markdown("### Status do sistema")
 
     mysql_online = verificar_mysql()
-    ollama_online = verificar_ollama()
 
-    if mysql_online and ollama_online:
+    if PROVEDOR_IA == "groq":
+        ia_online = verificar_groq()
+        nome_ia = "Groq"
+    else:
+        ia_online = verificar_ollama()
+        nome_ia = "Ollama"
+
+    if mysql_online and ia_online:
         st.success("🟢 Agente disponível")
     else:
         st.error("🔴 Agente indisponível")
 
-    if ollama_online:
-        st.caption("🟢 Ollama: Online")
+    if ia_online:
+        st.caption(f"🟢 {nome_ia}: Online")
     else:
-        st.caption("🔴 Ollama: Indisponível")
+        st.caption(f"🔴 {nome_ia}: Indisponível")
 
     if mysql_online:
         st.caption("🟢 MySQL: Conectado")
@@ -256,7 +271,10 @@ with st.sidebar:
 
     st.markdown("### Tecnologias")
     st.write("🐍 Python 3.12")
-    st.write("🧠 Ollama — Qwen3:4b")
+    if PROVEDOR_IA == "groq":
+        st.write("🧠 Groq — GPT-OSS 120B")
+    else:
+        st.write("🧠 Ollama — Qwen3:4b")
     st.write("🗄️ MySQL")
     st.write("🌐 Streamlit")
 
@@ -426,24 +444,6 @@ def buscar_pedido(numero_pedido: int) -> str:
     return json.dumps(pedido, ensure_ascii=False, default=str)
 
 
-INSTRUCOES = {
-    "role": "system",
-    "content": (
-        "Você é o SmartAgent AI, um agente de atendimento ao cliente. "
-        "Responda sempre em português, de forma clara e profissional. "
-        "Quando o usuário perguntar sobre um pedido, utilize buscar_pedido. "
-        "Nunca invente dados de pedidos. "
-        "As informações são fictícias e utilizadas para demonstração. "
-        "Não solicite senhas ou dados bancários."
-    )
-}
-
-
-
-
-
-
-
 @st.fragment
 def exibir_historico():
     with st.container(key=f"historico_{st.session_state.sessao_id}"):
@@ -473,76 +473,71 @@ if pergunta:
     with st.chat_message("assistant"):
         with st.spinner("Consultando a inteligência artificial..."):
             try:
-                resposta = chat(
-                    model=MODELO,
-                    messages=st.session_state.mensagens,
-                    tools=[
-                    buscar_pedido,
-                    buscar_total_clientes,
-                    buscar_analise_pedidos
-],
-                    options={"temperature": 0.2}
-                )
+                ferramentas = {
+                    "buscar_pedido": buscar_pedido,
+                    "buscar_total_clientes": buscar_total_clientes,
+                    "buscar_analise_pedidos": buscar_analise_pedidos
+                }
 
-                st.session_state.mensagens.append(
-                    resposta.message.model_dump()
-                )
+                if PROVEDOR_IA == "groq":
+                    texto = responder_groq(
+                        st.session_state.mensagens,
+                        ferramentas
+                    )
 
-                if resposta.message.tool_calls:
-                    for chamada in resposta.message.tool_calls:
-                        nome = chamada.function.name
-                        if nome == "buscar_pedido":
-                            try:
-                                resultado = buscar_pedido(
-                                    **chamada.function.arguments
-                                )
-                            except Exception:
-                                resultado = "Não foi possível consultar o pedido."
-
-                        elif nome == "buscar_total_clientes":
-                            try:
-                                resultado = buscar_total_clientes()
-                            except Exception:
-                                resultado = "Não foi possível consultar o total de clientes."
-                        elif nome == "buscar_analise_pedidos":
-                            try:
-                                resultado = buscar_analise_pedidos()
-                            except Exception:
-                                resultado = "Não foi possível analisar os pedidos."
-                        else:
-                            resultado = "Ferramenta não autorizada."
-
-                        st.session_state.mensagens.append({
-                            "role": "tool",
-                            "tool_name": nome,
-                            "content": resultado
-                        })
+                else:
+                    mensagens_ollama = [
+                        mensagem.copy()
+                        for mensagem in st.session_state.mensagens
+                    ]
 
                     resposta = chat(
                         model=MODELO,
-                        messages=st.session_state.mensagens,
+                        messages=mensagens_ollama,
+                        tools=list(ferramentas.values()),
                         options={"temperature": 0.2}
                     )
 
-                   
-                    # A resposta final será adicionada mais abaixo
-                    pass
+                    mensagens_ollama.append(
+                        resposta.message.model_dump()
+                    )
 
+                    if resposta.message.tool_calls:
+                        for chamada in resposta.message.tool_calls:
+                            nome = chamada.function.name
 
-                
-                
-                texto = resposta.message.content or "Não foi possível gerar uma resposta."
+                            try:
+                                if nome in ferramentas:
+                                    resultado = ferramentas[nome](
+                                        **chamada.function.arguments
+                                    )
+                                else:
+                                    resultado = "Ferramenta não autorizada."
 
-                # Evita duplicar a resposta final na conversa
-                if (
-                    not st.session_state.mensagens
-                    or st.session_state.mensagens[-1].get("role") != "assistant"
-                    or st.session_state.mensagens[-1].get("tool_calls")
-                ):
-                    st.session_state.mensagens.append({
-                        "role": "assistant",
-                        "content": texto
-                    })
+                            except Exception:
+                                resultado = "Não foi possível realizar a consulta."
+
+                            mensagens_ollama.append({
+                                "role": "tool",
+                                "tool_name": nome,
+                                "content": resultado
+                            })
+
+                        resposta = chat(
+                            model=MODELO,
+                            messages=mensagens_ollama,
+                            options={"temperature": 0.2}
+                        )
+
+                    texto = (
+                        resposta.message.content
+                        or "Não foi possível gerar uma resposta."
+                    )
+
+                st.session_state.mensagens.append({
+                    "role": "assistant",
+                    "content": texto
+                })
 
                 salvar_mensagem(
                     st.session_state.sessao_id,
@@ -551,6 +546,11 @@ if pergunta:
                 )
 
                 st.markdown(texto)
+
+            except Exception:
+                st.error(
+                    "Erro na comunicação com a inteligência artificial."
+                )
 
 
 
