@@ -109,7 +109,7 @@ if "mensagens" not in st.session_state:
     st.session_state.mensagens = [INSTRUCOES.copy()]
 
 st.title("🤖 SmartAgent AI")
-st.caption(f"Agente inteligente de atendimento | Python + {PROVEDOR_IA.title()} + MySQL")
+st.caption(f"Agente inteligente de atendimento | Python + {PROVEDOR_IA.title()} + {NOME_DB}")
 
 st.markdown("### 📊 Métricas de atendimento")
 
@@ -270,9 +270,9 @@ with st.sidebar:
         st.caption(f"🔴 {nome_ia}: Indisponível")
 
     if mysql_online:
-        st.caption("🟢 MySQL: Conectado")
+        st.caption(f"🟢 {NOME_DB}: Conectado")
     else:
-        st.caption("🔴 MySQL: Desconectado")
+        st.caption(f"🔴 {NOME_DB}: Desconectado")
     
 
     st.markdown("### Tecnologias")
@@ -281,7 +281,7 @@ with st.sidebar:
         st.write("🧠 Groq — GPT-OSS 120B")
     else:
         st.write("🧠 Ollama — Qwen3:4b")
-    st.write("🗄️ MySQL")
+    st.write(f"🗄️ {NOME_DB}")
     st.write("🌐 Streamlit")
 
     st.divider()
