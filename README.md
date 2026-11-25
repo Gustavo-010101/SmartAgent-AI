@@ -1,67 +1,108 @@
 # 🤖 SmartAgent AI
 
-![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-F55036?style=for-the-badge)
+![TiDB](https://img.shields.io/badge/TiDB_Cloud-4479A1?style=for-the-badge)
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Concluído-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge)
+
+## 🌐 Acesse o aplicativo
+
+[![Acessar SmartAgent AI](https://img.shields.io/badge/ACESSAR_APLICATIVO-ONLINE-success?style=for-the-badge&logo=streamlit)](https://smartagent-ai.streamlit.app)
+
+**Link:** https://smartagent-ai.streamlit.app
+
+Não é necessário instalar nenhum programa para experimentar a versão online.
 
 ## 📌 Sobre o projeto
 
-O SmartAgent AI é um agente inteligente de atendimento ao cliente, desenvolvido para automatizar consultas de pedidos utilizando inteligência artificial generativa e integração com banco de dados.
+O SmartAgent AI é um agente inteligente de atendimento ao cliente, desenvolvido para automatizar consultas de pedidos utilizando inteligência artificial generativa, integração com bancos de dados e análise de indicadores operacionais.
 
-O sistema permite que os usuários realizem perguntas em linguagem natural e recebam respostas baseadas nas informações armazenadas no MySQL.
+O sistema interpreta perguntas em linguagem natural, executa ferramentas de consulta ao banco de dados e apresenta respostas baseadas nos registros disponíveis.
 
-O projeto utiliza um modelo de linguagem executado localmente por meio do Ollama, sem depender de APIs pagas de inteligência artificial.
+A aplicação possui dois ambientes de execução: local e em nuvem.
 
 ## 🎯 Objetivos
 
-- Automatizar consultas de pedidos.
-- Facilitar o acesso às informações.
-- Reduzir tarefas repetitivas no atendimento.
+- Automatizar consultas de atendimento.
+- Facilitar o acesso às informações operacionais.
+- Reduzir tarefas repetitivas.
 - Integrar inteligência artificial com bancos de dados.
 - Monitorar indicadores de atendimento.
-- Demonstrar a aplicação prática de IA em processos empresariais.
+- Demonstrar aplicações práticas de IA em processos empresariais.
 
 ## 🚀 Funcionalidades
 
 - Chat inteligente com IA generativa.
-- Consulta de pedidos em linguagem natural.
-- Consulta de produtos e status de entrega.
+- Consultas de pedidos em linguagem natural.
+- Consulta de produtos, clientes e status.
 - Consulta de previsões de entrega.
-- Histórico de conversas persistente.
-- Criação de novas conversas.
-- Renomeação de conversas.
-- Exclusão de conversas.
-- Exportação de conversas em TXT.
-- Monitoramento da conexão com MySQL e Ollama.
+- Análise inteligente de dados.
+- Ranking de produtos por quantidade de pedidos.
+- Contagem de clientes e pedidos.
+- Análise de pedidos cancelados, atrasados e entregues.
 - Dashboard de métricas de atendimento.
 - Gráfico de atividade diária.
 - Tabela interativa de pedidos.
-- Pesquisa por número, cliente ou produto.
-- Filtro por status dos pedidos.
-- Interface responsiva com tema escuro.
-- Análise inteligente de dados utilizando IA generativa.
-- Contagem total de pedidos e clientes.
-- Contagem de produtos, status e datas distintas.
-- Análise de pedidos cancelados, atrasados e entregues.
-- Ranking de produtos por quantidade de pedidos.
-- Análise de pedidos por cliente.
-- Comparação de indicadores operacionais.
-- Consultas de dados consolidados diretamente no MySQL.
+- Pesquisa e filtros de registros.
+- Criação e renomeação de conversas.
+- Exclusão e exportação de conversas em TXT.
+- Histórico individual por sessão na versão online.
+- Histórico persistente na versão local.
+- Monitoramento das conexões.
+- Interface com tema escuro.
+
 ## 🛠️ Tecnologias utilizadas
 
 | Tecnologia | Finalidade |
 |---|---|
-| Python 3.12 | Desenvolvimento da aplicação |
+| Python | Desenvolvimento da aplicação |
 | Streamlit | Interface web |
-| Ollama | Execução local da inteligência artificial |
-| Qwen3:4b | Modelo de linguagem |
-| MySQL | Armazenamento de dados |
-| Pandas | Manipulação e análise de dados |
+| Groq | Inferência de IA na nuvem |
+| GPT-OSS 120B | Modelo de linguagem online |
+| TiDB Cloud | Banco de dados na nuvem |
+| Ollama | Execução local da IA |
+| Qwen3:4b | Modelo de linguagem local |
+| MySQL | Banco de dados local |
+| Pandas | Manipulação de dados |
 | Altair | Visualização de dados |
-| Python-dotenv | Gerenciamento de variáveis de ambiente |
-| Git e GitHub | Versionamento de código |
+| Python-dotenv | Variáveis de ambiente |
+| Git e GitHub | Versionamento |
+| Streamlit Community Cloud | Hospedagem |
+
+## 🏗️ Arquitetura do sistema
+
+```mermaid
+flowchart TD
+    A[Usuario] --> B[Interface Streamlit]
+    B --> C[Agente inteligente Python]
+    C --> D{Provedor de IA}
+    D --> E[Groq - GPT-OSS 120B]
+    D --> F[Ollama - Qwen3]
+    C --> G[Ferramentas de consulta]
+    G --> H{Banco de dados}
+    H --> I[TiDB Cloud]
+    H --> J[MySQL local]
+    I --> K[Dados dos pedidos]
+    J --> K
+    K --> C
+    C --> L[Resposta ao usuario]
+    B --> M[Gerenciamento de historico]
+    M --> N[Sessao individual online]
+    M --> O[Historico persistente local]
+```
+
+## ☁️ Ambientes de execução
+
+| Recurso | Versão local | Versão online |
+|---|---|---|
+| Inteligência artificial | Ollama | Groq |
+| Modelo | Qwen3:4b | GPT-OSS 120B |
+| Banco de dados | MySQL | TiDB Cloud |
+| Histórico | Persistente | Temporário por sessão |
+| Hospedagem | Computador local | Streamlit Cloud |
 
 ## 📸 Demonstração do sistema
 
@@ -73,34 +114,25 @@ O projeto utiliza um modelo de linguagem executado localmente por meio do Ollama
 
 ![Demonstração 4](images/Captura%20de%20tela%202026-11-24%20152303.png)
 
-```text
-Usuário
-   |
-   v
-Interface Streamlit
-   |
-   v
-Agente inteligente Python
-   |
-   +------> Ollama / Qwen3:4b
-   |
-   +------> Banco de dados MySQL
-   |
-   v
-Resposta ao usuário
-```
-
 ## 🗄️ Banco de dados
 
-O projeto utiliza o banco de dados `smartagent_ai`, composto por três tabelas:
+A base de demonstração contém dados fictícios.
 
-| Tabela | Descrição |
+| Indicador | Quantidade |
+|---|---:|
+| Pedidos | 100 |
+| Clientes distintos | 100 |
+| Produtos distintos | 16 |
+| Tipos de status | 6 |
+| Datas de entrega distintas | 31 |
+
+### Estrutura das tabelas
+
+| Tabela | Finalidade |
 |---|---|
-| pedidos | Informações dos pedidos fictícios |
-| historico_conversas | Registro das mensagens |
-| titulos_conversas | Gerenciamento dos títulos das conversas |
-
-A base de demonstração foi planejada com 100 pedidos fictícios, incluindo clientes, produtos, status e previsões de entrega.
+| pedidos | Informações dos pedidos |
+| historico_conversas | Mensagens do ambiente local |
+| titulos_conversas | Títulos das conversas locais |
 
 ## 📊 Indicadores de atendimento
 
@@ -114,8 +146,11 @@ A base de demonstração foi planejada com 100 pedidos fictícios, incluindo cli
 
 - Qual é o status do pedido 1001?
 - Quando está prevista a entrega do pedido 1003?
-- Qual produto pertence ao pedido 1004?
-- Qual é o produto e o status do pedido 1015?
+- Quantos pedidos temos no total?
+- Quantos clientes estão cadastrados?
+- Quantos pedidos estão cancelados?
+- Qual produto possui mais pedidos?
+- Quantos pedidos estão em transporte?
 
 ## 📁 Estrutura do projeto
 
@@ -123,33 +158,31 @@ A base de demonstração foi planejada com 100 pedidos fictícios, incluindo cli
 SmartAgent-AI/
 ├── .streamlit/
 │   └── config.toml
+├── certificados/
+│   └── tidb-ca.pem
+├── images/
 ├── .env.example
 ├── .gitignore
 ├── agente.py
 ├── app.py
 ├── database.py
 ├── database.sql
+├── historico.py
+├── provedor_ia.py
 ├── requirements.txt
 └── README.md
 ```
 
-## ⚙️ Instalação e execução
+## ⚙️ Instalação local
 
-### 1. Pré-requisitos
-
-- Python 3.12
-- MySQL Server
-- Ollama
-- Git
-
-### 2. Clonar o repositório
+### 1. Clonar o repositório
 
 ```bash
 git clone https://github.com/Gustavo-010101/SmartAgent-AI.git
 cd SmartAgent-AI
 ```
 
-### 3. Criar o ambiente virtual
+### 2. Criar o ambiente virtual
 
 ```bash
 python -m venv .venv
@@ -157,30 +190,34 @@ python -m venv .venv
 
 No Windows:
 
-```bash
-.venv\Scripts\activate
+```powershell
+.\.venv\Scripts\Activate.ps1
 ```
 
-### 4. Instalar as dependências
+### 3. Instalar as dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Configurar o banco de dados
+### 4. Configurar o MySQL
 
-Execute o arquivo `database.sql` no MySQL Workbench.
+Execute o arquivo database.sql no MySQL Workbench.
 
-Crie uma cópia do arquivo `.env.example` com o nome `.env` e configure suas credenciais:
+Crie uma cópia do arquivo .env.example com o nome .env e configure:
 
 ```env
+PROVEDOR_IA=ollama
+PROVEDOR_DB=mysql
+MODO_PUBLICO=false
+
 DB_HOST=localhost
 DB_USER=seu_usuario
 DB_PASSWORD=sua_senha
 DB_NAME=smartagent_ai
 ```
 
-### 6. Baixar o modelo de inteligência artificial
+### 5. Configurar o Ollama
 
 ```bash
 ollama pull qwen3:4b
@@ -188,34 +225,51 @@ ollama pull qwen3:4b
 
 Certifique-se de que o Ollama esteja em execução.
 
-### 7. Executar a aplicação
+### 6. Iniciar o aplicativo
 
 ```bash
 python -m streamlit run app.py
 ```
 
-Acesse o endereço informado pelo Streamlit no terminal.
+## ☁️ Configuração na nuvem
+
+A versão online utiliza Groq e TiDB Cloud.
+
+As variáveis necessárias estão documentadas no arquivo .env.example.
+
+Na hospedagem, as credenciais devem ser configuradas na seção Secrets do Streamlit Cloud.
 
 ## 🔒 Segurança e privacidade
 
 - Credenciais armazenadas em variáveis de ambiente.
-- Arquivo `.env` protegido pelo `.gitignore`.
-- Modelo de inteligência artificial executado localmente.
+- Arquivos privados protegidos pelo .gitignore.
+- Conexão TLS com verificação do certificado.
+- Usuário do banco online com permissão de leitura.
+- Histórico individual por sessão na versão pública.
 - Base de demonstração composta por dados fictícios.
+- Ferramentas de consulta previamente definidas.
+
+O histórico online é temporário e pode ser perdido ao encerrar ou recarregar a sessão.
+
+A versão online está sujeita aos limites de utilização dos serviços de hospedagem, banco de dados e inteligência artificial.
 
 ## 🧠 Competências demonstradas
 
 - Inteligência artificial generativa.
 - Modelos de linguagem (LLMs).
 - Desenvolvimento de agentes inteligentes.
+- Tool Calling.
 - Engenharia de prompts.
 - Programação em Python.
-- Banco de dados relacional.
-- Integração de sistemas.
+- SQL e bancos de dados relacionais.
+- Integração de APIs.
+- Computação em nuvem.
 - Análise e visualização de dados.
+- Segurança e privacidade.
 - Automação de processos.
 - Desenvolvimento de aplicações web.
 - Versionamento de código.
+- Deploy de aplicações.
 
 ## 👨‍💻 Desenvolvedor
 
@@ -223,7 +277,8 @@ Acesse o endereço informado pelo Streamlit no terminal.
 
 Projeto desenvolvido para portfólio profissional, com foco em tecnologia, inteligência artificial, análise de dados e automação de processos empresariais.
 
-GitHub: https://github.com/Gustavo-010101
+- GitHub: https://github.com/Gustavo-010101
+- Aplicativo: https://smartagent-ai.streamlit.app
 
 ---
 
