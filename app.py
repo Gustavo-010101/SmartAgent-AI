@@ -1,3 +1,5 @@
+import os
+import platform
 import altair as alt
 import pandas as pd
 import json
@@ -31,6 +33,10 @@ from historico import (
 )
 
 MODELO = "qwen3:4b"
+
+PROVEDOR_DB = os.getenv("PROVEDOR_DB", "mysql").lower()
+
+NOME_DB = "TiDB Cloud" if PROVEDOR_DB == "tidb" else "MySQL"
 
 def buscar_total_clientes() -> str:
     """Consulta o total de clientes cadastrados no banco de dados."""
